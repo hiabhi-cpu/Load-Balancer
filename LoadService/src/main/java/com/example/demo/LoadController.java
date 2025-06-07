@@ -2,6 +2,8 @@ package com.example.demo;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -19,10 +21,17 @@ import jakarta.servlet.http.HttpServletRequest;
 public class LoadController {
 	
 	private final CloseableHttpClient client=HttpClients.createDefault();
+	private int currentUrl=0;
 	
 	@GetMapping("/**")
 	public ResponseEntity<?> proxy(HttpServletRequest request){
-		String backendUrl = "http://localhost:8082" + request.getRequestURI();
+		List<String> urlList=new ArrayList<String>();
+		urlList.add("http://localhost:8080" + request.getRequestURI());
+		urlList.add("http://localhost:8081" + request.getRequestURI());
+		
+		String backendUrl=urlList.get(currentUrl);
+		currentUrl=(currentUrl+1)%urlList.size();
+		
 	    System.out.println("Received request from: " + request.getRemoteAddr());
 	    System.out.println(request.getProtocolRequestId());
 
