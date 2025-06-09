@@ -16,6 +16,7 @@ public class Controller {
 		
 		System.out.println(request.getRequestURI());
 		System.out.println(request.getRemoteAddr());
+		System.out.println("Hello from Backend Server "+request.getLocalPort());
 		return new ResponseEntity<String>("Hello From Backend Server "+request.getLocalPort(),HttpStatus.OK);
 	}
 	
